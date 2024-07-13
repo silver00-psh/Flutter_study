@@ -1,10 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Feed extends StatelessWidget {
+class Feed extends StatefulWidget {
   const Feed({
-    super.key,
-  });
+    Key? key,
+    required this.imageUrl,
+  }) : super(key: key);
+
+  final String imageUrl;
+
+  @override
+  State<Feed> createState() => _FeedState();
+}
+
+class _FeedState extends State<Feed> {
+  // 외부에서 접근x
+  bool isFavorite = false; // 좋아요 여부
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +24,7 @@ class Feed extends StatelessWidget {
       children: [
         // 이미지
         Image.network(
-          "https://i.ibb.co/YjjLCS7/cat.png",
+          widget.imageUrl,
           height: 400,
           width: double.infinity, //최대크기
           fit: BoxFit.cover,
@@ -21,8 +32,16 @@ class Feed extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              icon: Icon(CupertinoIcons.heart, color: Colors.black),
-              onPressed: () {},
+              icon: Icon(
+                CupertinoIcons.heart,
+                color: isFavorite ? Colors.pink : Colors.black,
+              ),
+              onPressed: () {
+                setState(() {
+                  // 화면 갱신 함수
+                  isFavorite = !isFavorite; // true, false로 변환
+                });
+              },
             ),
             IconButton(
               icon: Icon(CupertinoIcons.chat_bubble, color: Colors.black),
